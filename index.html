@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Eazycalc.in - Professional Financial Tools</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -45,13 +45,15 @@
 
         footer { padding: 40px 20px; background: #000; color: #fff; text-align: center; }
         .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
-        .footer-links span { cursor: pointer; color: #fff; font-size: 14px; text-decoration: underline; }
+        .footer-links span { cursor: pointer; color: #fff; font-size: 14px; text-decoration: none; }
         .dev-credit { color: #fff; font-size: 13px; margin-top: 10px; opacity: 0.7; }
-        .dev-credit a { color: #fff; text-decoration: none; }
+        .dev-credit a { color: #fff; text-decoration: none; border: none; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; padding: 20px; }
         .modal-content { background: white; padding: 40px; border-radius: 15px; max-width: 800px; margin: 20px auto; position: relative; max-height: 85vh; overflow-y: auto; color: #000; }
         .close-btn { position: absolute; top: 15px; right: 15px; font-size: 25px; cursor: pointer; }
+        .modal-body h3 { margin-top: 25px; margin-bottom: 10px; color: var(--purple); }
+        .modal-body p { margin-bottom: 15px; line-height: 1.6; }
 
         @media (max-width: 768px) {
             .calc-container { grid-template-columns: 1fr; }
@@ -138,7 +140,7 @@
 
         <div class="content-box" data-aos="fade-up">
             <h2>Financial Planning for 2026</h2>
-            <p>Eazycalc.in offers professional precision-based financial calculators. Understanding your Loan EMIs, SIP growth, and GST implications is vital for smart wealth management. Our tools are built to Indian banking standards for accurate estimation.</p>
+            <p>Eazycalc.in offers professional precision-based financial calculators. Understanding your Loan EMIs, SIP growth, and GST implications is vital for smart wealth management. Our tools are built to Indian banking standards for accurate estimation. Proper planning allows for better debt management and robust wealth creation over time.</p>
         </div>
     </main>
 
@@ -150,11 +152,11 @@
             <span onclick="openModal('terms')">Terms & Conditions</span>
             <span onclick="openModal('contact')">Contact Support</span>
         </div>
-        <div class="dev-credit">This website developed by www.knoxit.in</div>
+        <div class="dev-credit">This website developed by <a href="https://www.knoxit.in" target="_blank">www.knoxit.in</a></div>
     </footer>
 
     <div id="modal" class="modal">
-        <div class="modal-content"><span class="close-btn" onclick="closeModal()">&times;</span><div id="modal-body"></div></div>
+        <div class="modal-content"><span class="close-btn" onclick="closeModal()">&times;</span><div id="modal-body" class="modal-body"></div></div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -179,9 +181,9 @@
 
         function openModal(page) {
             const b = document.getElementById('modal-body');
-            if(page === 'contact') b.innerHTML = "<h3>Contact Support</h3><p style='margin-top:20px'>Email: info@eazycalc.in</p>";
-            else if(page === 'privacy') b.innerHTML = "<h2>Privacy Policy</h2><p style='margin-top:20px'>We respect your privacy. Data is processed locally in your browser. No inputs are stored or transmitted. [500+ word professional content placeholders removed as requested]</p>";
-            else if(page === 'terms') b.innerHTML = "<h2>Terms & Conditions</h2><p style='margin-top:20px'>Calculations are for estimation purposes. Verify with official bank values before payments. [500+ word professional content placeholders removed as requested]</p>";
+            if(page === 'contact') b.innerHTML = "<h2>Contact Support</h2><p>For any technical inquiries or feedback regarding our financial tools, please reach out to us at:</p><h3>Email</h3><p>info@eazycalc.in</p>";
+            else if(page === 'privacy') b.innerHTML = "<h2>Privacy Policy</h2><h3>Introduction</h3><p>Welcome to Eazycalc.in. We are committed to protecting your personal information and your right to privacy. This policy explains how we handle your data when you use our financial tools.</p><h3>Data Processing</h3><p>Eazycalc.in operates entirely on the client-side. This means any financial data you enter—such as loan amounts, interest rates, or investment figures—never leaves your computer or smartphone. We do not use databases to store your inputs. All calculations are performed instantly in your browser.</p><h3>Cookies and Tracking</h3><p>We use third-party advertising cookies through Google AdSense to serve advertisements based on your prior visits to our website or other websites on the Internet. These cookies help us maintain the site as a free resource. You can choice to disable cookies in your browser settings.</p><h3>Data Security</h3><p>Since we do not collect or store personal financial data, there is no risk of data breaches involving your sensitive financial information on our platform. We encourage users to maintain secure browser environments.</p>";
+            else if(page === 'terms') b.innerHTML = "<h2>Terms & Conditions</h2><h3>Agreement to Terms</h3><p>By accessing Eazycalc.in, you agree to comply with and be bound by these terms. If you disagree with any part of these terms, you may not access the service.</p><h3>Accuracy Disclaimer</h3><p>The financial calculations provided by our tools are estimates based on standard mathematical formulas. While we strive for 100% precision, results may vary due to banking compounding methods or tax changes.</p><h3>Professional Advice</h3><p>The information on this website is for educational and informational purposes only. It should not be considered as official financial, legal, or tax advice. Users are encouraged to verify results with a certified professional before making significant financial commitments.</p><h3>Limitation of Liability</h3><p>Eazycalc.in and its developers shall not be held liable for any financial losses or discrepancies arising from the use of these tools. Use of our services is at your own risk.</p>";
             document.getElementById('modal').style.display = 'block';
         }
 
