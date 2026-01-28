@@ -6,124 +6,159 @@
     <title>Eazycalc.in</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --purple: #673AB7; --green: #2E7D32; --white: #FFFFFF; --bg: #f9f9fb; }
+        :root { --purple: #673AB7; --green: #2E7D32; --white: #FFFFFF; --bg: #f0f2f5; --accent: #FFC107; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
         body { 
             background-color: var(--white); 
-            height: 100vh; 
+            min-height: 100vh; 
             display: flex; 
             flex-direction: column; 
-            overflow: hidden; 
         }
 
-        .ad-banner { height: 55px; background: #f1f1f1; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #aaa; text-transform: uppercase; }
+        header { padding: 5px; text-align: center; background: var(--white); order: -2; }
+        header img { height: 40px; display: block; margin: 0 auto; }
 
-        header { padding: 10px; text-align: center; }
-        header img { height: 50px; display: block; margin: 0 auto; }
+        .ad-banner { height: 50px; background: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #777; text-transform: uppercase; }
 
-        nav { display: flex; justify-content: center; gap: 8px; padding: 10px; }
-        nav button { flex: 1; padding: 12px 5px; border: 2px solid var(--purple); border-radius: 10px; background: transparent; color: var(--purple); font-weight: 700; cursor: pointer; font-size: 11px; }
-        nav button.active { background: var(--purple); color: white; }
+        nav { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 5px; 
+            padding: 10px; 
+            max-width: 400px; 
+            margin: 0 auto;
+        }
+        nav button { 
+            padding: 8px; 
+            border: 2px solid var(--purple); 
+            border-radius: 8px; 
+            background: var(--white); 
+            color: var(--purple); 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-size: 10px; 
+        }
+        nav button.active { background: var(--purple); color: white; border-color: var(--purple); }
 
-        main { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px; overflow-y: auto; scrollbar-width: none; }
-        main::-webkit-scrollbar { display: none; }
+        main { flex: 1; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
 
-        .calc-container { width: 100%; max-width: 480px; background: var(--bg); padding: 20px; border-radius: 20px; display: none; border: 1px solid #eee; }
+        .calc-container { 
+            width: 100%; 
+            max-width: 500px; 
+            display: none; 
+        }
         .calc-container.active { display: block; }
 
+        .input-card { 
+            background: var(--purple); 
+            padding: 20px; 
+            border-radius: 15px; 
+            color: white;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(103, 58, 183, 0.3);
+        }
+        
         .input-group { margin-bottom: 12px; }
-        label { display: block; font-size: 13px; margin-bottom: 5px; color: #444; font-weight: 600; }
-        input { width: 100%; padding: 12px; border: 1.5px solid #ddd; border-radius: 10px; font-size: 16px; outline: none; }
+        label { display: block; font-size: 12px; margin-bottom: 5px; color: #e0e0e0; font-weight: 600; }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            outline: none; 
+            background: rgba(255,255,255,0.9);
+        }
 
-        .result { margin-top: 15px; padding: 15px; background: var(--green); color: white; border-radius: 12px; text-align: center; }
-        .result h3 { font-size: 12px; opacity: 0.9; text-transform: uppercase; }
-        .result span { font-size: 24px; font-weight: 800; display: block; margin-top: 5px; }
+        .result-card { 
+            background: var(--green); 
+            padding: 20px; 
+            border-radius: 15px; 
+            color: white; 
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+        .result-card h3 { font-size: 12px; text-transform: uppercase; margin-bottom: 5px; }
+        .result-card span { font-size: 26px; font-weight: 800; display: block; color: var(--accent); }
 
-        .info-section { width: 100%; max-width: 480px; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
-        .acc-item { border-bottom: 1px solid #eee; }
-        .acc-btn { width: 100%; padding: 12px 5px; background: none; border: none; text-align: left; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; color: #333; }
-        .acc-content { padding: 0 5px 15px 5px; display: none; font-size: 12px; color: #666; line-height: 1.5; }
+        .info-section { width: 100%; max-width: 500px; margin-top: 10px; }
+        .acc-item { border-bottom: 1px solid #ddd; }
+        .acc-btn { width: 100%; padding: 12px; background: none; border: none; text-align: left; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; color: var(--purple); }
+        .acc-content { padding: 10px; display: none; font-size: 12px; color: #444; line-height: 1.5; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: white; padding: 25px; border-radius: 20px; max-width: 450px; width: 100%; position: relative; }
-        .modal-content h2 { color: var(--purple); margin-bottom: 15px; font-size: 20px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; max-width: 400px; width: 100%; position: relative; }
         .close-btn { position: absolute; top: 15px; right: 15px; font-size: 24px; cursor: pointer; color: #999; }
 
-        footer { padding: 15px; text-align: center; font-size: 12px; color: #777; background: #fff; }
+        footer { padding: 15px; text-align: center; font-size: 11px; color: #555; background: #eee; }
         .footer-links { margin-bottom: 8px; }
         .footer-links span { cursor: pointer; color: var(--purple); margin: 0 8px; font-weight: 600; text-decoration: underline; }
         footer a { color: var(--purple); text-decoration: none; font-weight: 800; }
 
         @media (min-width: 768px) {
-            .calc-container { max-width: 800px; }
-            .calc-container.active { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; align-items: center; }
-            .result { height: 100%; display: flex; flex-direction: column; justify-content: center; margin-top: 0; }
+            nav { max-width: 600px; grid-template-columns: repeat(4, 1fr); }
+            .calc-container.active { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; }
+            .input-card { margin-bottom: 0; }
+            .result-card { height: 100%; display: flex; flex-direction: column; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="ad-banner">Top Advertisement Slot</div>
-
     <header>
         <img src="images/mylogo.png" alt="Eazycalc.in Logo">
     </header>
 
+    <div class="ad-banner">Top Advertisement Slot</div>
+
     <nav>
-        <button onclick="showCalc('sip')" id="btn-sip" class="active">SIP</button>
-        <button onclick="showCalc('emi')" id="btn-emi">EMI</button>
-        <button onclick="showCalc('gst')" id="btn-gst">GST</button>
+        <button onclick="showCalc('emi')" id="btn-emi" class="active">EMI</button>
+        <button onclick="showCalc('sip')" id="btn-sip">SIP</button>
         <button onclick="showCalc('fd')" id="btn-fd">FD</button>
+        <button onclick="showCalc('gst')" id="btn-gst">GST</button>
     </nav>
 
     <main>
-        <div id="sip" class="calc-container active">
-            <div class="inputs">
-                <div class="input-group"><label>Monthly Investment (₹)</label><input type="number" id="sip-amt" value="5000" oninput="calcSIP()"></div>
-                <div class="input-group"><label>Expected Return Rate (% p.a)</label><input type="number" id="sip-rate" value="12" oninput="calcSIP()"></div>
-                <div class="input-group"><label>Time Period (Years)</label><input type="number" id="sip-years" value="10" oninput="calcSIP()"></div>
+        <div id="emi" class="calc-container active">
+            <div class="input-card">
+                <div class="input-group"><label>Loan Amount (₹)</label><input type="number" id="emi-amt" placeholder="Enter amount" oninput="calcEMI()"></div>
+                <div class="input-group"><label>Interest Rate (%)</label><input type="number" id="emi-rate" placeholder="Enter rate" oninput="calcEMI()"></div>
+                <div class="input-group"><label>Tenure (Years)</label><input type="number" id="emi-years" placeholder="Enter years" oninput="calcEMI()"></div>
             </div>
-            <div class="result"><h3>Expected Maturity Value</h3><span id="sip-res">₹ 11,61,695</span></div>
+            <div class="result-card"><h3>Monthly EMI</h3><span id="emi-res">₹ 0</span></div>
         </div>
 
-        <div id="emi" class="calc-container">
-            <div class="inputs">
-                <div class="input-group"><label>Loan Amount (₹)</label><input type="number" id="emi-amt" value="1000000" oninput="calcEMI()"></div>
-                <div class="input-group"><label>Interest Rate (%)</label><input type="number" id="emi-rate" value="8.5" oninput="calcEMI()"></div>
-                <div class="input-group"><label>Loan Tenure (Years)</label><input type="number" id="emi-years" value="15" oninput="calcEMI()"></div>
+        <div id="sip" class="calc-container">
+            <div class="input-card">
+                <div class="input-group"><label>Monthly SIP (₹)</label><input type="number" id="sip-amt" placeholder="Enter amount" oninput="calcSIP()"></div>
+                <div class="input-group"><label>Return Rate (%)</label><input type="number" id="sip-rate" placeholder="Enter rate" oninput="calcSIP()"></div>
+                <div class="input-group"><label>Time (Years)</label><input type="number" id="sip-years" placeholder="Enter years" oninput="calcSIP()"></div>
             </div>
-            <div class="result"><h3>Monthly Loan EMI</h3><span id="emi-res">₹ 9,847</span></div>
-        </div>
-
-        <div id="gst" class="calc-container">
-            <div class="inputs">
-                <div class="input-group"><label>Net Amount (₹)</label><input type="number" id="gst-amt" value="1000" oninput="calcGST()"></div>
-                <div class="input-group"><label>GST Rate (%)</label><input type="number" id="gst-rate" value="18" oninput="calcGST()"></div>
-            </div>
-            <div class="result"><h3>Gross Amount (Incl. GST)</h3><span id="gst-res">₹ 1,180</span></div>
+            <div class="result-card"><h3>Maturity Value</h3><span id="sip-res">₹ 0</span></div>
         </div>
 
         <div id="fd" class="calc-container">
-            <div class="inputs">
-                <div class="input-group"><label>Fixed Deposit Amount (₹)</label><input type="number" id="fd-amt" value="100000" oninput="calcFD()"></div>
-                <div class="input-group"><label>Interest Rate (% p.a)</label><input type="number" id="fd-rate" value="7" oninput="calcFD()"></div>
-                <div class="input-group"><label>Tenure (Years)</label><input type="number" id="fd-years" value="5" oninput="calcFD()"></div>
+            <div class="input-card">
+                <div class="input-group"><label>Deposit Amount (₹)</label><input type="number" id="fd-amt" placeholder="Enter amount" oninput="calcFD()"></div>
+                <div class="input-group"><label>Interest Rate (%)</label><input type="number" id="fd-rate" placeholder="Enter rate" oninput="calcFD()"></div>
+                <div class="input-group"><label>Tenure (Years)</label><input type="number" id="fd-years" placeholder="Enter years" oninput="calcFD()"></div>
             </div>
-            <div class="result"><h3>Total Maturity Amount</h3><span id="fd-res">₹ 1,41,478</span></div>
+            <div class="result-card"><h3>Maturity Amount</h3><span id="fd-res">₹ 0</span></div>
+        </div>
+
+        <div id="gst" class="calc-container">
+            <div class="input-card">
+                <div class="input-group"><label>Net Amount (₹)</label><input type="number" id="gst-amt" placeholder="Enter amount" oninput="calcGST()"></div>
+                <div class="input-group"><label>GST Rate (%)</label><input type="number" id="gst-rate" placeholder="Enter rate" oninput="calcGST()"></div>
+            </div>
+            <div class="result-card"><h3>Gross Total</h3><span id="gst-res">₹ 0</span></div>
         </div>
 
         <div class="info-section">
             <div class="acc-item">
-                <button class="acc-btn" onclick="toggleAcc('acc1')">About Calculations <span>+</span></button>
-                <div id="acc1" class="acc-content">Our financial tools use mathematical algorithms like Compound Interest for SIP/FD and Reducing Balance method for EMI to provide precise estimates.</div>
-            </div>
-            <div class="acc-item">
-                <button class="acc-btn" onclick="toggleAcc('acc2')">Frequently Asked Questions <span>+</span></button>
-                <div id="acc2" class="acc-content">
-                    <b>Is SIP better than FD?</b><br>SIP involves market risk but generally offers higher long-term returns. FD provides guaranteed returns with zero risk.<br><br>
-                    <b>Are results accurate?</b><br>Yes, calculations are based on standard financial formulas used by Indian banks.
-                </div>
+                <button class="acc-btn" onclick="toggleAcc('acc1')">How it works? <span>+</span></button>
+                <div id="acc1" class="acc-content">Calculations are based on standard financial algorithms used globally for EMI, SIP, FD, and GST.</div>
             </div>
         </div>
     </main>
@@ -136,7 +171,7 @@
             <span onclick="openModal('terms')">Terms of Use</span>
             <span onclick="openModal('contact')">Contact Us</span>
         </div>
-        This website developed by <a href="https://www.knoxit.in" target="_blank">www.knoxit.in</a>
+        Developed by <a href="https://www.knoxit.in" target="_blank">www.knoxit.in</a>
     </footer>
 
     <div id="modal" class="modal">
@@ -161,28 +196,26 @@
 
         function openModal(page) {
             let body = "";
-            if(page === 'privacy') {
-                body = "<h2>Privacy Policy</h2><p>At Eazycalc.in, we respect your privacy. We do not collect, store, or share any financial data you input into our calculators. All processing is done locally in your browser.</p>";
-            } else if(page === 'terms') {
-                body = "<h2>Terms of Use</h2><p>The results generated by these calculators are estimates for informational purposes only. Please verify with your financial institution before making investment decisions.</p>";
-            } else if(page === 'contact') {
-                body = "<h2>Contact Us</h2><p>For support or business inquiries, reach us at:</p><br><b>Email:</b> info@eazycalc.in<br><b>Website:</b> www.knoxit.in";
-            }
+            if(page === 'privacy') body = "<h2>Privacy Policy</h2><p>We do not store or share any financial data you enter. All calculations are performed in your browser.</p>";
+            else if(page === 'terms') body = "<h2>Terms of Use</h2><p>Results are for informational purposes. Consult a professional advisor for financial decisions.</p>";
+            else if(page === 'contact') body = "<h2>Contact Us</h2><p>Email: <b>info@eazycalc.in</b></p>";
             document.getElementById('modal-body').innerHTML = body;
             document.getElementById('modal').style.display = 'flex';
         }
 
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
-        function calcSIP() {
-            let P = parseFloat(document.getElementById('sip-amt').value)||0, r = (parseFloat(document.getElementById('sip-rate').value)/100)/12, n = parseFloat(document.getElementById('sip-years').value)*12;
-            let F = P * ((Math.pow(1+r,n)-1)/r) * (1+r);
-            document.getElementById('sip-res').innerText = "₹ " + (isNaN(F) ? 0 : Math.round(F).toLocaleString('en-IN'));
-        }
         function calcEMI() {
             let P = parseFloat(document.getElementById('emi-amt').value)||0, r = (parseFloat(document.getElementById('emi-rate').value)/100)/12, n = parseFloat(document.getElementById('emi-years').value)*12;
+            if(r===0) { document.getElementById('emi-res').innerText = "₹ 0"; return; }
             let emi = P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
-            document.getElementById('emi-res').innerText = "₹ " + (isNaN(emi) ? 0 : Math.round(emi).toLocaleString('en-IN'));
+            document.getElementById('emi-res').innerText = "₹ " + Math.round(emi).toLocaleString('en-IN');
+        }
+        function calcSIP() {
+            let P = parseFloat(document.getElementById('sip-amt').value)||0, r = (parseFloat(document.getElementById('sip-rate').value)/100)/12, n = parseFloat(document.getElementById('sip-years').value)*12;
+            if(r===0) { document.getElementById('sip-res').innerText = "₹ 0"; return; }
+            let F = P * ((Math.pow(1+r,n)-1)/r) * (1+r);
+            document.getElementById('sip-res').innerText = "₹ " + Math.round(F).toLocaleString('en-IN');
         }
         function calcGST() {
             let a = parseFloat(document.getElementById('gst-amt').value)||0, r = parseFloat(document.getElementById('gst-rate').value)||0;
